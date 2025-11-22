@@ -120,14 +120,14 @@ letter-spacing: 0.3rem;
   color: #fff; /* kontrast do pomarańczowego tła */
 }
 
-.events{
+.workouts{
   width:60%;
   height:100%;
   padding:3rem 0;
 
 }
 
-.event-popup{
+.workout-popup{
   position:absolute;
   top:38%;
   left:3rem;
@@ -165,7 +165,7 @@ letter-spacing: 0.3rem;
   font-size: clamp(1.2rem,1.3cqi,1.6rem);
 }
 
-.event-popup-time{
+.workout-popup-time{
   width:clamp(4rem,4cqi,7rem);
   height:4rem;
   background-color: #00a3ff;
@@ -180,7 +180,7 @@ letter-spacing: 0.3rem;
 }
 
 
-.event{
+.workout{
   width:100%;
   height:7rem;
   background-color: #00a3ff;
@@ -193,27 +193,27 @@ letter-spacing: 0.3rem;
 
 }
 
-.event-date-wrapper{
+.workout-date-wrapper{
   display:flex;
   flex-direction: column;
   align-items: center;
   width:25%;
   border-right:.1rem solid rgba(255,255,255,0.5);
 }
-.event-date{
+.workout-date{
   font-size:clamp(1rem,1cqi,1.2rem);
   color:#ddd;
 
 }
 
-.event-time{
+.workout-time{
   font-size:clamp(1rem,1cqi,1.6rem);
   color:#fff;
   line-height:4rem;
   font-weight: bold;
 }
 
-.event-text{
+.workout-text{
   font-size:clamp(1.2rem,1cqi,1.4rem);
   color:#fff;
   line-height:2rem;
@@ -221,14 +221,14 @@ letter-spacing: 0.3rem;
   padding: 0 3rem 0 1rem;
   overflow-wrap:break-word ;
 }
-.event-buttons{
+.workout-buttons{
   display: flex;
   column-gap:1rem;
   margin-left:auto;
   margin-right:2rem;
 }
-.event-buttons .edit-btn,
-.event-buttons .delete-btn{
+.workout-buttons .edit-btn,
+.workout-buttons .delete-btn{
   width:3.5rem;
   height:3.5rem;
   background-color: #2c3542;
