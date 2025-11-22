@@ -27,6 +27,10 @@ const CalendarApp = () => {
   });
 };
 
+const handleDeleteEvent=(id)=>{
+setEvents(events.filter(event=>event.id!==id));
+};
+
 const nextMonth = () => {
   setCurrentMonth((prev) => {
     if (prev === 11) {
@@ -168,7 +172,7 @@ const handleEditEvent=(event)=>{
                     <button className="edit-btn" onClick={()=>handleEditEvent(event)}>
                     <PencilSquareIcon className="icon-small" />
                     </button>
-                     <button className="delete-btn">
+                     <button className="delete-btn" onClick={()=>handleDeleteEvent(event.id)}>
                     <XMarkIcon className="icon-small" />
                     </button>
                 </div>
