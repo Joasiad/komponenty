@@ -13,7 +13,7 @@ const CalendarApp = () => {
     const[events,setEvents]=useState([])
     const[eventTime,setEventTime]=useState({hours:'00',minutes:"00"})
     const[eventText,setEventText]=useState('')
-
+    const[editingEvent,setEditingEvent]=useState(null)
     const daysInMonth=new Date(currentYear,currentMonth+1,0).getDate()
     const firstDayOfMonth=new Date(currentYear,currentMonth,1).getDay()
 
@@ -46,6 +46,7 @@ const handleDayClick=(day)=>{
         setShowEventPopup(true)
         setEventText("")
         setEventTime({hours:'00',minutes:"00"})
+        setEditingEvent(null)
 
     }
 }
@@ -55,16 +56,41 @@ const closePopup = () => {
 
 const handleEventSubmit=()=>{
     const newEvent={
+        id:editingEvent?editingEvent.id: Date.now(),
         date: selectedDate,
-        time: `${eventTime.hours.padStart(2,'0')},${eventTime.minutes.padStart(2,'0')}`,
+        time: `${eventTime.hours.padStart(2,'0')}:${eventTime.minutes.padStart(2,'0')}`,
         text:eventText
     }
-    setEvents([...events,newEvent])
+
+    let updatedEvents=[...events]
+
+    if(editingEvent){
+        updatedEvents=updatedEvents.map((event)=>
+        event.id===editingEvent.id?newEvent:event,
+    )}else{
+        updatedEvents.push(newEvent)
+
+    }
+    
+    updatedEvents.sort((a,b)=>new Date(a.date)-new Date(b.date))
+    setEvents(updatedEvents)
     setEventTime({hours:'00',minutes:"00"})
-    showEventPopup(false)
+    setShowEventPopup(false)
+    setEditingEvent(null)
 }
 
 
+const handleEditEvent=(event)=>{
+    setSelectedDate(new Date(event.date))
+    setEventTime({
+        hours: event.time.split(':')[0],
+        minutes: event.time.split(':')[1],
+        
+    })
+    setEventText(event.text)
+    setEditingEvent(event)
+    setShowEventPopup(true)
+}
   return (
     <div className="calendar-app">
         <div className="calendar">
@@ -134,12 +160,12 @@ const handleEventSubmit=()=>{
             <div className="event" key={index}>
                 <div className="event-date-wrapper">
                     <div className="event-date">
-                        {`${monthsOfYear[event.date.getMonth()]}${event.date.getDate()}${event.date.getFullYear()}}}`}</div>
+                         {`${monthsOfYear[event.date.getMonth()]} ${event.date.getDate()}, ${event.date.getFullYear()}`}</div>
                     <div className="event-time">{event.time}</div>
                 </div>
                 <div className="event-text">{event.text}</div>
                 <div className="event-buttons">
-                    <button className="edit-btn">
+                    <button className="edit-btn" onClick={()=>handleEditEvent(event)}>
                     <PencilSquareIcon className="icon-small" />
                     </button>
                      <button className="delete-btn">
