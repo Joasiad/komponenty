@@ -1,6 +1,8 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import { XMarkIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
+import "./CalendarApp.css";
+import React from "react";
 
 const CalendarApp = () => {
   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
