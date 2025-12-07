@@ -3,7 +3,11 @@ import { XMarkIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import "./CalendarApp.css";
 import React from "react";
+import WorkoutList from "./WorkoutList";
+import WorkoutPopup from "./WorkoutPopup";
+import Button from"./button";
 
+import AddExercise from "./AddExercise";
 const CalendarApp = () => {
   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const monthsOfYear = [
@@ -94,10 +98,14 @@ const CalendarApp = () => {
   const handleDeleteWorkout = (id) => {
     setWorkouts(workouts.filter(w => w.id !== id));
   };
+  const [showAddExercise, setShowAddExercise] = useState(false);
+
 
   return (
+    
     <div className="calendar-app">
-
+<Button onClick={() => setShowAddExercise(true)}>Dodaj nowe ćwiczenie</Button>
+ {showAddExercise && <AddExercise onClose={() => setShowAddExercise(false)} />}
       {/* CALENDAR */}
       <div className="calendar">
         <h1 className="heading">Training Planner</h1>
@@ -107,12 +115,12 @@ const CalendarApp = () => {
           <h2 className="year">{currentDate.getFullYear()}</h2>
 
           <div className="buttons">
-            <button className="btn-left" onClick={prevMonth}>
+            <Button className="btn-left" onClick={prevMonth}>
               <ChevronLeftIcon className="icon-small" />
-            </button>
-            <button className="btn-right" onClick={nextMonth}>
+            </Button>
+            <Button className="btn-right" onClick={nextMonth}>
               <ChevronRightIcon className="icon-small" />
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -143,72 +151,32 @@ const CalendarApp = () => {
         </div>
       </div>
 
-      {/* WORKOUT POPUP */}
-      <div className="workouts">
-        {showWorkoutPopup && (
-          <div className="workout-popup">
-            <div className="time-input">
-              <div className="workout-popup-time">Time</div>
+      
 
-              <input
-                type="number"
-                min={0}
-                max={24}
-                className="hours"
-                value={workoutTime.hours}
-                onChange={e => setWorkoutTime({ ...workoutTime, hours: e.target.value })}
-              />
+      {showWorkoutPopup && (
+        <WorkoutPopup
+          workoutTime={workoutTime}
+          workoutText={workoutText}
+          setWorkoutTime={setWorkoutTime}
+          setWorkoutText={setWorkoutText}
+          handleWorkoutSubmit={handleWorkoutSubmit}
+          closePopup={closePopup}
+          editingWorkout={editingWorkout}
+        />
+      )}
 
-              <input
-                type="number"
-                min={0}
-                max={60}
-                className="minutes"
-                value={workoutTime.minutes}
-                onChange={e => setWorkoutTime({ ...workoutTime, minutes: e.target.value })}
-              />
-            </div>
-
-            <textarea
-              placeholder="Enter workout description"
-              value={workoutText}
-              onChange={e => { if (e.target.value.length <= 60) setWorkoutText(e.target.value); }}
-            />
-
-            <button className="workout-popup-btn" onClick={handleWorkoutSubmit}>
-              {editingWorkout ? "Save workout" : "Add workout"}
-            </button>
-
-            <button className="close-workout-popup" onClick={closePopup}>
-              <XMarkIcon className="icon-small" />
-            </button>
-          </div>
-        )}
-
-        
-        {workouts.map(workout => (
-          <div className="workout" key={workout.id}>
-            <div className="workout-date-wrapper">
-              <div className="workout-date">
-                {`${monthsOfYear[workout.date.getMonth()]} ${workout.date.getDate()}, ${workout.date.getFullYear()}`}
-              </div>
-              <div className="workout-time">{workout.time}</div>
-            </div>
-
-            <div className="workout-text">{workout.text}</div>
-
-            <div className="workout-buttons">
-              <button className="edit-btn" onClick={() => handleEditWorkout(workout)}>
-                <PencilSquareIcon className="icon-small" />
-              </button>
-              <button className="delete-btn" onClick={() => handleDeleteWorkout(workout.id)}>
-                <XMarkIcon className="icon-small" />
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
+     
+      <WorkoutList
+        workouts={workouts}
+        monthsOfYear={monthsOfYear}
+        handleEditWorkout={handleEditWorkout}
+        handleDeleteWorkout={handleDeleteWorkout}
+      />
     </div>
+        
+        
+      
+    
   );
 };
 

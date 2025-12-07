@@ -6,6 +6,8 @@ const cors = require("cors");
 const app = express();
 app.use(cors());
 app.use(express.json());
+const exerciseRoutes = require("./routes/exerciseRoutes");
+app.use("/exercises", exerciseRoutes);
 
 // 🔗 Połączenie z MongoDB Atlas
 mongoose.connect(process.env.MONGO_URL)
