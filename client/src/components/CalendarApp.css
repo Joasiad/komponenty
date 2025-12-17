@@ -110,14 +110,14 @@ letter-spacing: 0.3rem;
   color: #ddd;
   cursor: pointer;
   text-shadow: 0 0.5rem 1rem rgba(0,0,0,0.2);
-  background-color: transparent; /* upewnij się, że domyślnie jest przezroczyste */
+  background-color: transparent; 
 }
 
 .days span.currentDay{
-  background-color: #c97f1a; /* dodaj !important jeśli dalej nie działa */
+  background-color: #c97f1a; 
   border-radius: 50%;
   box-shadow: 0 0 1.5rem 1rem rgba(239,144,17,0.3);
-  color: #fff; /* kontrast do pomarańczowego tła */
+  color: #fff;
 }
 
 .workouts{

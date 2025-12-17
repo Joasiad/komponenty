@@ -1,5 +1,5 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
-import { XMarkIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
+
 import { useState } from "react";
 import "./CalendarApp.css";
 import React from "react";
@@ -28,7 +28,7 @@ const CalendarApp = () => {
   const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
   const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
 
-  // NAVIGATE MONTHS
+  // nawigacja miesiecy i kalendarzyk
   const nextMonth = () => {
     setCurrentDate(prev => {
       const newMonth = prev.getMonth() + 1;
@@ -98,15 +98,19 @@ const CalendarApp = () => {
   const handleDeleteWorkout = (id) => {
     setWorkouts(workouts.filter(w => w.id !== id));
   };
+
+  //popup dodawani ecwiczen
   const [showAddExercise, setShowAddExercise] = useState(false);
-
-
+  const closeAddPopup=()=>setShowAddExercise(false)
   return (
     
     <div className="calendar-app">
-<Button onClick={() => setShowAddExercise(true)}>Dodaj nowe ćwiczenie</Button>
- {showAddExercise && <AddExercise onClose={() => setShowAddExercise(false)} />}
-      {/* CALENDAR */}
+      <Button onClick={() => setShowAddExercise(true)}>Add exercise</Button>
+      {showAddExercise && <AddExercise
+      closeAddPopup={closeAddPopup} />
+ 
+ }
+      
       <div className="calendar">
         <h1 className="heading">Training Planner</h1>
 
