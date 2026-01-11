@@ -1,0 +1,216 @@
+/* GŁÓWNY PANEL (podobny do .add-exercise) */
+.exercise-panel {
+  position: fixed;
+  top: 10%;
+  right: 3rem;
+
+  height: 40rem;
+  overflow-y: auto;
+
+  background: #161b22;
+  width: clamp(25rem, 21cqi, 40rem);
+  aspect-ratio: 10/9;
+
+  border-radius: 1rem;
+  padding: 0; /* bo mamy header */
+  box-shadow: 0 1rem 3rem rgba(0,0,0,0.35);
+
+  display: flex;
+  flex-direction: column;
+
+  z-index: 9998;
+}
+
+/* HEADER */
+.exercise-header {
+  width: 100%;
+  height: 3.5rem;
+
+  background: #2c3542;
+  border-radius: .8rem .8rem 0 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.exercise-header h2 {
+  color: #c97f1a;
+  font-size: 1.4rem;
+  letter-spacing: .05rem;
+  margin: 0;
+}
+
+/* BODY */
+.exercise-body {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+}
+
+/* INFO (loading/error) */
+.exercise-info {
+  color: #ccc;
+  font-size: 0.95rem;
+}
+
+/* LISTA */
+.exercise-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.7rem;
+}
+
+.exercise-row {
+  background: #0d1117;
+  border: 1px solid #2c3542;
+  border-radius: 0.8rem;
+  padding: 0.9rem 1rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+
+  transition: 0.2s;
+}
+
+.exercise-row:hover {
+  border-color: #c97f1a;
+  box-shadow: 0 0 0.7rem rgba(201,127,26,0.15);
+}
+
+.exercise-text {
+  color: #ccc;
+  font-size: 0.95rem;
+  line-height: 1.2rem;
+}
+
+/* ACTION BUTTONS (edit/delete) */
+.exercise-actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-shrink: 0;
+}
+
+/* MINI BUTTON (podobny vibe jak close-addExercise-popup) */
+.exercise-mini-btn {
+  width: 2.2rem;
+  height: 2.2rem;
+
+  background: #1e242d;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  border: none;
+  transition: 0.2s ease-in-out;
+}
+
+.exercise-mini-btn:hover {
+  background: #c97f1a !important;
+  box-shadow: 0 0 1rem rgba(201,127,26,0.25);
+}
+
+.exercise-mini-btn .icon-small {
+  color: #fff;
+}
+
+/* TRYB EDYCJI */
+.exercise-edit-form {
+  width: 100%;
+  background: #0d1117;
+  border: 1px solid #2c3542;
+  border-radius: 0.8rem;
+
+  padding: 1rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.exercise-edit-form input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+
+  border-radius: 0.5rem;
+  border: none;
+  outline: none;
+
+  background-color: #0d1117;
+  color: #e2e2e2;
+
+  border: 1px solid #2c3542;
+  font-size: 1rem;
+
+  transition: 0.2s;
+}
+
+.exercise-edit-form input:focus {
+  border-color: #c97f1a;
+  box-shadow: 0 0 0.7rem rgba(201,127,26,0.3);
+}
+
+.exercise-edit-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.6rem;
+}
+
+/* PRZYCISKI ZAPISZ / ANULUJ */
+.exercise-primary-btn {
+  width: 100%;
+  padding: 0.9rem;
+
+  font-weight: bold;
+  font-size: 1.05rem;
+
+  background-color: #c97f1a;
+  color: #fff;
+
+  border: none;
+  border-radius: 0.6rem;
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+.exercise-primary-btn:hover {
+  background-color: #e29a3b;
+  box-shadow: 0 0 1.2rem rgba(201,127,26,0.35);
+}
+
+.exercise-secondary-btn {
+  width: 100%;
+  padding: 0.9rem;
+
+  font-weight: bold;
+  font-size: 1.05rem;
+
+  background: #1e242d;
+  color: #fff;
+
+  border: 1px solid #2c3542;
+  border-radius: 0.6rem;
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+.exercise-secondary-btn:hover {
+  border-color: #c97f1a;
+  box-shadow: 0 0 1.2rem rgba(201,127,26,0.15);
+}

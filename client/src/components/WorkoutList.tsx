@@ -1,10 +1,29 @@
-import { PencilSquareIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import React from "react";
+import { PencilSquareIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Button from "./button";
 
-const WorkoutList = ({ workouts, monthsOfYear, handleEditWorkout, handleDeleteWorkout }) => (
+type Workout = {
+  id: number;
+  date: Date;
+  time: string;
+  text: string;
+};
+
+type WorkoutListProps = {
+  workouts: Workout[];
+  monthsOfYear: string[];
+  handleEditWorkout: (workout: Workout) => void;
+  handleDeleteWorkout: (id: number) => void;
+};
+
+const WorkoutList = ({
+  workouts,
+  monthsOfYear,
+  handleEditWorkout,
+  handleDeleteWorkout,
+}: WorkoutListProps) => (
   <div className="workouts">
-    {workouts.map(workout => (
+    {workouts.map((workout) => (
       <div className="workout" key={workout.id}>
         <div className="workout-date-wrapper">
           <div className="workout-date">
@@ -19,6 +38,7 @@ const WorkoutList = ({ workouts, monthsOfYear, handleEditWorkout, handleDeleteWo
           <Button className="edit-btn" onClick={() => handleEditWorkout(workout)}>
             <PencilSquareIcon className="icon-small" />
           </Button>
+
           <Button className="delete-btn" onClick={() => handleDeleteWorkout(workout.id)}>
             <XMarkIcon className="icon-small" />
           </Button>

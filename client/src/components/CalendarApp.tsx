@@ -1,13 +1,26 @@
+import React, { useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
-import { useState } from "react";
 import "./CalendarApp.css";
-import React from "react";
 import WorkoutList from "./WorkoutList";
 import WorkoutPopup from "./WorkoutPopup";
-import Button from"./button";
-
+import Button from "./button";
 import AddExercise from "./AddExercise";
+import ExerciseList from "./ExerciseList";
+
+
+type WorkoutTime = {
+  hours: string;
+  minutes: string;
+};
+
+type Workout = {
+  id: number;
+  date: Date;      // trzymasz Date w stanie
+  time: string;    // "HH:MM"
+  text: string;
+};
+
 const CalendarApp = () => {
   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const monthsOfYear = [
@@ -16,21 +29,26 @@ const CalendarApp = () => {
   ];
 
   const today = new Date();
-  const [currentDate, setCurrentDate] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
-  const [selectedDate, setSelectedDate] = useState(today);
 
-  const [showWorkoutPopup, setShowWorkoutPopup] = useState(false);
-  const [workouts, setWorkouts] = useState([]);
-  const [workoutTime, setWorkoutTime] = useState({ hours: "00", minutes: "00" });
-  const [workoutText, setWorkoutText] = useState("");
-  const [editingWorkout, setEditingWorkout] = useState(null);
+  const [currentDate, setCurrentDate] = useState<Date>(
+    new Date(today.getFullYear(), today.getMonth(), 1)
+  );
+  const [selectedDate, setSelectedDate] = useState<Date>(today);
+
+  const [showWorkoutPopup, setShowWorkoutPopup] = useState<boolean>(false);
+  const [workouts, setWorkouts] = useState<Workout[]>([]);
+  const [workoutTime, setWorkoutTime] = useState<WorkoutTime>({ hours: "00", minutes: "00" });
+  const [workoutText, setWorkoutText] = useState<string>("");
+  const [showExercises, setShowExercises] = useState(false);
+
+  // null albo Workout
+  const [editingWorkout, setEditingWorkout] = useState<Workout | null>(null);
 
   const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
   const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
 
-  // nawigacja miesiecy i kalendarzyk
   const nextMonth = () => {
-    setCurrentDate(prev => {
+    setCurrentDate((prev) => {
       const newMonth = prev.getMonth() + 1;
       const newYear = prev.getFullYear() + (newMonth > 11 ? 1 : 0);
       return new Date(newYear, newMonth % 12, 1);
@@ -38,15 +56,14 @@ const CalendarApp = () => {
   };
 
   const prevMonth = () => {
-    setCurrentDate(prev => {
+    setCurrentDate((prev) => {
       const newMonth = prev.getMonth() - 1;
       const newYear = prev.getFullYear() + (newMonth < 0 ? -1 : 0);
       return new Date(newYear, (newMonth + 12) % 12, 1);
     });
   };
 
- 
-  const handleDayClick = (day) => {
+  const handleDayClick = (day: number) => {
     const clickedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
     setSelectedDate(clickedDate);
     setWorkoutText("");
@@ -57,23 +74,23 @@ const CalendarApp = () => {
 
   const closePopup = () => setShowWorkoutPopup(false);
 
- 
   const handleWorkoutSubmit = () => {
-    const newWorkout = {
+    const newWorkout: Workout = {
       id: editingWorkout ? editingWorkout.id : Date.now(),
       date: selectedDate,
-      time: `${workoutTime.hours.padStart(2,'0')}:${workoutTime.minutes.padStart(2,'0')}`,
-      text: workoutText
+      time: `${workoutTime.hours.padStart(2, "0")}:${workoutTime.minutes.padStart(2, "0")}`,
+      text: workoutText,
     };
 
     let updated = [...workouts];
+
     if (editingWorkout) {
-      updated = updated.map(w => w.id === editingWorkout.id ? newWorkout : w);
+      updated = updated.map((w) => (w.id === editingWorkout.id ? newWorkout : w));
     } else {
       updated.push(newWorkout);
     }
 
-    updated.sort((a,b) => new Date(a.date) - new Date(b.date));
+    updated.sort((a, b) => a.date.getTime() - b.date.getTime());
     setWorkouts(updated);
 
     setWorkoutText("");
@@ -82,35 +99,36 @@ const CalendarApp = () => {
     setShowWorkoutPopup(false);
   };
 
-
-  const handleEditWorkout = (workout) => {
+  const handleEditWorkout = (workout: Workout) => {
     setSelectedDate(new Date(workout.date));
     setWorkoutTime({
-      hours: workout.time.split(":")[0],
-      minutes: workout.time.split(":")[1]
+      hours: workout.time.split(":")[0] ?? "00",
+      minutes: workout.time.split(":")[1] ?? "00",
     });
     setWorkoutText(workout.text);
     setEditingWorkout(workout);
     setShowWorkoutPopup(true);
   };
 
-  
-  const handleDeleteWorkout = (id) => {
-    setWorkouts(workouts.filter(w => w.id !== id));
+  const handleDeleteWorkout = (id: number) => {
+    setWorkouts(workouts.filter((w) => w.id !== id));
   };
 
-  //popup dodawani ecwiczen
-  const [showAddExercise, setShowAddExercise] = useState(false);
-  const closeAddPopup=()=>setShowAddExercise(false)
+  const [showAddExercise, setShowAddExercise] = useState<boolean>(false);
+  const closeAddPopup = () => setShowAddExercise(false);
+
   return (
-    
     <div className="calendar-app">
       <Button onClick={() => setShowAddExercise(true)}>Add exercise</Button>
-      {showAddExercise && <AddExercise
-      closeAddPopup={closeAddPopup} />
- 
- }
-      
+
+      {showAddExercise && <AddExercise closeAddPopup={closeAddPopup} />}
+      <Button onClick={() => setShowExercises((v) => !v)}>
+      {showExercises ? "Ukryj ćwiczenia" : "Pokaż ćwiczenia"}
+      </Button>
+      {showExercises && <ExerciseList />}
+
+
+
       <div className="calendar">
         <h1 className="heading">Training Planner</h1>
 
@@ -129,7 +147,9 @@ const CalendarApp = () => {
         </div>
 
         <div className="weekdays">
-          {daysOfWeek.map(day => <span key={day}>{day}</span>)}
+          {daysOfWeek.map((day) => (
+            <span key={day}>{day}</span>
+          ))}
         </div>
 
         <div className="days">
@@ -137,7 +157,7 @@ const CalendarApp = () => {
             <span key={`empty-${index}`} />
           ))}
 
-          {[...Array(daysInMonth).keys()].map(day => (
+          {[...Array(daysInMonth).keys()].map((day) => (
             <span
               key={day + 1}
               className={
@@ -155,8 +175,6 @@ const CalendarApp = () => {
         </div>
       </div>
 
-      
-
       {showWorkoutPopup && (
         <WorkoutPopup
           workoutTime={workoutTime}
@@ -169,18 +187,14 @@ const CalendarApp = () => {
         />
       )}
 
-     
       <WorkoutList
         workouts={workouts}
         monthsOfYear={monthsOfYear}
         handleEditWorkout={handleEditWorkout}
         handleDeleteWorkout={handleDeleteWorkout}
       />
+     
     </div>
-        
-        
-      
-    
   );
 };
 
