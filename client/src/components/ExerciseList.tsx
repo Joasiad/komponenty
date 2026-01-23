@@ -30,7 +30,7 @@ const ExerciseList = () => {
     kg: 0,
   });
 
-  const isEditing = useMemo(() => editingId !== null, [editingId]);
+  const isEditing = useMemo(() => editingId !== null, [editingId]);//use memo zapamietuje wynik funckji
 
   const load = async () => {
     try {

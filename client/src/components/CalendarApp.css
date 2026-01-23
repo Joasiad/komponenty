@@ -129,7 +129,7 @@ letter-spacing: 0.3rem;
 
 .workout-popup{
   position:absolute;
-  top:38%;
+  top:2rem;
   left:3rem;
   background: #161b22;
   width:clamp(25rem,21cqi,40rem);
@@ -141,8 +141,11 @@ letter-spacing: 0.3rem;
   justify-content:center;
   align-content: center;
   row-gap: 2rem;
+   padding: 2rem;
+  border: 0.2rem solid rgba(255,255,255,0.06);
+  z-index: 10000
+  ;
  
-
 }
 .time-input{
   display:flex;
@@ -192,6 +195,85 @@ letter-spacing: 0.3rem;
   position: relative;
 
 }
+.exercise-picker {
+  width: 100%;
+  padding: 1.2rem;
+  border-radius: 1rem;
+  background: rgba(255,255,255,0.04);
+  border: 0.1rem solid rgba(255,255,255,0.08);
+}
+
+.exercise-picker-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.exercise-list {
+  max-height: 18rem;
+  overflow: auto;
+  padding-right: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.exercise-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  padding: 0.9rem 1.1rem;
+  border-radius: 1rem;
+
+  background-color: #2c3542;
+  border: 0.1rem solid rgba(255,255,255,0.10);
+  cursor: pointer;
+  user-select: none;
+}
+
+.exercise-item input[type="checkbox"] {
+  width: 1.6rem;
+  height: 1.6rem;
+  accent-color: #c97f1a;
+}
+
+.exercise-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.exercise-name {
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.exercise-stats {
+  font-size: 1.2rem;
+  color: rgba(255,255,255,0.75);
+}
+/* Notatki – ciemne jak reszta */
+.workout-popup textarea {
+  width: 100%;
+  min-height: 7rem;
+  resize: none;
+
+  background-color: #1e242d;
+  color: #fff;
+
+  border: 0.1rem solid rgba(255,255,255,0.12);
+  border-radius: 1rem;
+  padding: 1rem 1.2rem;
+
+  font-size: 1.3rem;
+}
+
+.workout-popup textarea::placeholder {
+  color: rgba(255,255,255,0.55);
+}
 
 .workout-date-wrapper{
   display:flex;
@@ -239,4 +321,63 @@ letter-spacing: 0.3rem;
   border: none;
   cursor: pointer;
 
+}
+.workout-popup-btn {
+  background: #c97f1a !important;
+  color: #0f1319 !important;
+  border: none;
+  border-radius: 1rem;
+  padding: 1rem 1.2rem;
+  font-weight: 800;
+}
+.workout-popup-btn:hover {
+  filter: brightness(1.05);
+}
+.buttons-column {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: fit-content;   /* nie rozciąga się */
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+/* Twoje przyciski */
+
+.action-buttons-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  width: fit-content;
+  align-items: flex-start;
+
+  margin-bottom: 15px;
+}
+
+.columnb {
+  background: #ff8a00 !important;
+  color: white !important;
+
+  font-size: 12px;
+  padding: 7px 12px;
+
+  border-radius: 10px;
+  font-weight: 600;
+
+  width: auto;
+  min-width: 140px;
+
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
+.columnb:hover {
+  background: #ff7300 !important;
+}
+
+.columnb:active {
+  transform: scale(0.97);
 }

@@ -11,12 +11,12 @@ type Exercise = {
   _id: string;
   name: string;
   bodyPart: string;
-  series: string; // zostawiamy string, bo trzymasz to w inputach jako string
+  series: string; 
   reps: string;
   kg: string;
 };
 
-const AddExercise: React.FC<AddExerciseProps> = ({ closeAddPopup }) => {
+const AddExercise = ({ closeAddPopup }: AddExerciseProps) => {
   const [exerciseName, setExerciseName] = useState<string>("");
   const [bodyPart, setBodyPart] = useState<string>("");
   const [series, setSeries] = useState<string>("");
@@ -42,9 +42,9 @@ const AddExercise: React.FC<AddExerciseProps> = ({ closeAddPopup }) => {
   }, []);
 
   const handleAddExercise = async () => {
-    if (!exerciseName.trim()) return;
+    if (!exerciseName.trim()) return;//spacja
 
-    // payload bez _id – backend powinien go dodać
+
     const newExercise: Omit<Exercise, "_id"> = {
       name: exerciseName,
       bodyPart,
@@ -77,14 +77,14 @@ const AddExercise: React.FC<AddExerciseProps> = ({ closeAddPopup }) => {
 
   return (
     <div className="add-exercise">
-      {/* GÓRNY PASEK MODALA */}
+     
       <div className="add-exercise-header">
         <h2>Dodaj ćwiczenie</h2>
 
         
       </div>
 
-      {/* FORMULARZ */}
+      
       <div className="add-exercise-body">
         <input
           placeholder="Nazwa ćwiczenia"

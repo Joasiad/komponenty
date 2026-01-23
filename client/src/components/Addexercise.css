@@ -111,17 +111,13 @@
   letter-spacing: .05rem;
 }
 
-.close-addExercise-popup {
-  position: absolute;
-  right: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
+.close-addExercise-popup{
+  margin-top: auto;       
+  width: 100%;
+  height: 3.2rem;
 
-  width: 2rem;
-  height: 2rem;
-
-  background: #1e242d;
-  border-radius: 50%;
+  background: #c97f1a;
+  border-radius: 0.8rem;
 
   display: flex;
   justify-content: center;
@@ -132,12 +128,11 @@
   transition: 0.2s ease-in-out;
 }
 
-
-.close-addExercise-popup:hover {
-  background: #c97f1a !important;
+.close-addExercise-popup:hover{
+  background: #e29a3b;
 }
 
-.close-addExercise-popup .icon-small {
+.close-addExercise-popup .icon-small{
   color: #fff;
 }
 

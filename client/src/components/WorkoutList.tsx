@@ -2,50 +2,81 @@ import React from "react";
 import { PencilSquareIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Button from "./button";
 
-type Workout = {
-  id: number;
-  date: Date;
+export type Workout = {
+  _id: string;
+  date: string;          // ISO string
   time: string;
-  text: string;
+  exercises: string[];   // ID ćwiczeń
+  notes?: string;
 };
 
 type WorkoutListProps = {
   workouts: Workout[];
   monthsOfYear: string[];
+  currentDate: Date;
   handleEditWorkout: (workout: Workout) => void;
-  handleDeleteWorkout: (id: number) => void;
+  handleDeleteWorkout: (id: string) => void;
+};
+
+const formatDate = (iso: string, monthsOfYear: string[]) => {
+  const d = new Date(iso);
+  return `${monthsOfYear[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
 };
 
 const WorkoutList = ({
   workouts,
   monthsOfYear,
+  currentDate,
   handleEditWorkout,
   handleDeleteWorkout,
-}: WorkoutListProps) => (
-  <div className="workouts">
-    {workouts.map((workout) => (
-      <div className="workout" key={workout.id}>
-        <div className="workout-date-wrapper">
-          <div className="workout-date">
-            {`${monthsOfYear[workout.date.getMonth()]} ${workout.date.getDate()}, ${workout.date.getFullYear()}`}
+}: WorkoutListProps) => {
+  const visibleWorkouts = workouts
+    .filter((w) => {
+      const d = new Date(w.date);
+      return (
+        d.getFullYear() === currentDate.getFullYear() &&
+        d.getMonth() === currentDate.getMonth()
+      );
+    })
+    .sort((a, b) => {
+      const aTs = new Date(a.date).getTime();
+      const bTs = new Date(b.date).getTime();
+      return (aTs - bTs) || a.time.localeCompare(b.time);
+    });
+
+  return (
+    <div className="workouts">
+      {visibleWorkouts.map((workout) => (
+        <div className="workout" key={workout._id}>
+          <div className="workout-date-wrapper">
+            <div className="workout-date">
+              {formatDate(workout.date, monthsOfYear)}
+            </div>
+            <div className="workout-time">{workout.time}</div>
           </div>
-          <div className="workout-time">{workout.time}</div>
+
+          {workout.notes && <div className="workout-text">{workout.notes}</div>}
+
+          <div style={{ fontSize: 12, opacity: 0.8 }}>
+            Ćwiczenia: {workout.exercises?.length ?? 0}
+          </div>
+
+          <div className="workout-buttons">
+            <Button className="edit-btn" onClick={() => handleEditWorkout(workout)}>
+              <PencilSquareIcon className="icon-small" />
+            </Button>
+
+            <Button
+              className="delete-btn"
+              onClick={() => handleDeleteWorkout(workout._id)}
+            >
+              <XMarkIcon className="icon-small" />
+            </Button>
+          </div>
         </div>
-
-        <div className="workout-text">{workout.text}</div>
-
-        <div className="workout-buttons">
-          <Button className="edit-btn" onClick={() => handleEditWorkout(workout)}>
-            <PencilSquareIcon className="icon-small" />
-          </Button>
-
-          <Button className="delete-btn" onClick={() => handleDeleteWorkout(workout.id)}>
-            <XMarkIcon className="icon-small" />
-          </Button>
-        </div>
-      </div>
-    ))}
-  </div>
-);
+      ))}
+    </div>
+  );
+};
 
 export default WorkoutList;

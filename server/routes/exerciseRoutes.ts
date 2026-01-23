@@ -3,7 +3,7 @@ import Exercise from "../models/Exercise";
 
 const router = Router();
 
-// GET – pobranie wszystkich ćwiczeń
+// get pobieranie
 router.get("/", async (_req, res) => {
   try {
     const exercises = await Exercise.find();
@@ -13,7 +13,7 @@ router.get("/", async (_req, res) => {
   }
 });
 
-// POST – dodanie nowego ćwiczenia
+// post dodawanie
 router.post("/", async (req, res) => {
   const { name, bodyPart, series, reps, kg } = req.body;
 

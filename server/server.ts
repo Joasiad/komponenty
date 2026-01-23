@@ -11,11 +11,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// ROUTES
+// routes
 app.use("/api/workouts", workoutRoutes);
 app.use("/api/exercises", exerciseRoutes);
 
-// MongoDB
+// baza
 const MONGO_URL = process.env.MONGO_URL;
 
 if (!MONGO_URL) {

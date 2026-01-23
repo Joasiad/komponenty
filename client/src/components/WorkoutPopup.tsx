@@ -1,37 +1,38 @@
 import React from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Button from "./button";
+import type { Exercise } from "../api";
 
 type WorkoutTime = {
   hours: string;
   minutes: string;
 };
 
-type Workout = {
-  id: number;
-  date: Date;
-  time: string;
-  text: string;
-};
-
 type WorkoutPopupProps = {
   workoutTime: WorkoutTime;
-  workoutText: string;
   setWorkoutTime: (time: WorkoutTime) => void;
-  setWorkoutText: (text: string) => void;
-  handleWorkoutSubmit: () => void;
+
+  handleWorkoutSubmit: () => void | Promise<void>;
   closePopup: () => void;
-  editingWorkout: Workout | null;
+
+  exercises: Exercise[];
+  selectedExerciseIds: string[];
+  setSelectedExerciseIds: (ids: string[]) => void;
+
+  notes: string;
+  setNotes: (v: string) => void;
 };
 
 const WorkoutPopup = ({
   workoutTime,
-  workoutText,
   setWorkoutTime,
-  setWorkoutText,
   handleWorkoutSubmit,
   closePopup,
-  editingWorkout,
+  exercises,
+  selectedExerciseIds,
+  setSelectedExerciseIds,
+  notes,
+  setNotes,
 }: WorkoutPopupProps) => (
   <div className="workout-popup">
     <div className="time-input">
@@ -40,7 +41,7 @@ const WorkoutPopup = ({
       <input
         type="number"
         min={0}
-        max={24}
+        max={23}
         className="hours"
         value={workoutTime.hours}
         onChange={(e) =>
@@ -51,7 +52,7 @@ const WorkoutPopup = ({
       <input
         type="number"
         min={0}
-        max={60}
+        max={59}
         className="minutes"
         value={workoutTime.minutes}
         onChange={(e) =>
@@ -60,18 +61,54 @@ const WorkoutPopup = ({
       />
     </div>
 
+    <div className="exercise-picker">
+      <div className="exercise-picker-title">Ćwiczenia</div>
+
+      {exercises.length === 0 ? (
+        <div className="exercise-empty">
+          Brak ćwiczeń w bazie (dodaj je przyciskiem po lewej)
+        </div>
+      ) : (
+        <div className="exercise-list">
+          {exercises.map((ex) => (
+            <label key={ex._id} className="exercise-item">
+              <input
+                type="checkbox"
+                checked={selectedExerciseIds.includes(ex._id)}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    setSelectedExerciseIds([...selectedExerciseIds, ex._id]);
+                  } else {
+                    setSelectedExerciseIds(
+                      selectedExerciseIds.filter((id) => id !== ex._id)
+                    );
+                  }
+                }}
+              />
+
+              <div className="exercise-meta">
+                <div className="exercise-name">{ex.name}</div>
+
+                <div className="exercise-stats">
+    {ex.kg} kg • {ex.reps} reps • {ex.series} serie
+  </div>
+              </div>
+            </label>
+          ))}
+        </div>
+      )}
+    </div>
+
     <textarea
-      placeholder="Enter workout description"
-      value={workoutText}
+      placeholder="Notatki do treningu (opcjonalnie)"
+      value={notes}
       onChange={(e) => {
-        if (e.target.value.length <= 60) {
-          setWorkoutText(e.target.value);
-        }
+        if (e.target.value.length <= 200) setNotes(e.target.value);
       }}
     />
 
     <Button className="workout-popup-btn" onClick={handleWorkoutSubmit}>
-      {editingWorkout ? "Save workout" : "Add workout"}
+      Zapisz trening
     </Button>
 
     <Button className="close-workout-popup" onClick={closePopup}>
