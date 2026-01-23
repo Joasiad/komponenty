@@ -22,7 +22,7 @@ type Workout = {
   _id: string;
   date: string;      
   time: string;  
-  exercises:string[];  
+  exercises:(Exercise|string)[];  
   notes?: string;
 };
 
@@ -76,18 +76,23 @@ const CalendarApp = () => {
 
 
 
-    const handleEditWorkout = (workout: Workout) => {
-  // na razie tylko otwórz popup i ustaw dane
-      setSelectedDate(new Date(workout.date));
-      setWorkoutTime({
-        hours: workout.time.split(":")[0] ?? "00",
-        minutes: workout.time.split(":")[1] ?? "00",
-      });
-      setSelectedExerciseIds(workout.exercises ?? []);
-      setNotes(workout.notes ?? "");
-      setEditingWorkout(workout);
-      setShowWorkoutPopup(true);
-    };
+   const handleEditWorkout = (workout: Workout) => {
+  setSelectedDate(new Date(workout.date));
+  setWorkoutTime({
+    hours: workout.time.split(":")[0] ?? "00",
+    minutes: workout.time.split(":")[1] ?? "00",
+  });
+
+  const ids = (workout.exercises ?? []).map((ex) =>
+    typeof ex === "string" ? ex : ex._id
+  );
+  setSelectedExerciseIds(ids);
+
+  setNotes(workout.notes ?? "");
+  setEditingWorkout(workout);
+  setShowWorkoutPopup(true);
+};
+
 
   const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();//zwraca dzien 0 nastepnego msc
   const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();//sluzy do wstawiania pustych pol

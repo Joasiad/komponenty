@@ -2,11 +2,18 @@ import React from "react";
 import { PencilSquareIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Button from "./button";
 
+
+
+type Exercise = {
+  _id: string;
+  name: string;
+};
+
 export type Workout = {
   _id: string;
   date: string;          // ISO string
   time: string;
-  exercises: string[];   // ID ćwiczeń
+  exercises: (string|Exercise)[];   // ID ćwiczeń
   notes?: string;
 };
 
@@ -57,9 +64,13 @@ const WorkoutList = ({
 
           {workout.notes && <div className="workout-text">{workout.notes}</div>}
 
-          <div style={{ fontSize: 12, opacity: 0.8 }}>
-            Ćwiczenia: {workout.exercises?.length ?? 0}
-          </div>
+           <ul className="exercise-list">
+            {workout.exercises.map((el) => (
+              <li key={typeof el === "string" ? el : el._id}>
+                {typeof el === "string" ? el : el.name}
+              </li>
+            ))}
+          </ul>
 
           <div className="workout-buttons">
             <Button className="edit-btn" onClick={() => handleEditWorkout(workout)}>

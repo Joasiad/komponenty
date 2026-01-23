@@ -24,9 +24,8 @@ type Workout = {
   exercises: string[];
   notes?: string;
 };
-type ChartView = "month" | "weekday" | "trend";
 
-const [activeChart, setActiveChart] = useState<ChartView>("month");
+
 // helper: YYYY-MM
 const monthKey = (d: Date) =>
   `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
@@ -34,9 +33,13 @@ const monthKey = (d: Date) =>
 const monthLabel = (d: Date) =>
   d.toLocaleString("pl-PL", { month: "short", year: "numeric" });
 
+
+type ChartView = "month" | "weekday" | "trend";
 const Statistics = () => {
   const navigate = useNavigate();
 
+
+const [activeChart, setActiveChart] = useState<ChartView>("month");
   const [workouts, setWorkouts] = useState<Workout[]>([]);
 
   // ✅ pobierz treningi z bazy
@@ -101,11 +104,10 @@ const Statistics = () => {
   <div className="stats-page">
     <h1 style={{ marginBottom: "1rem" }}>Statystyki</h1>
 
-    <Button onClick={() => navigate("/")}>Wróć do strony głównej</Button>
+    <Button className="back" onClick={() => navigate("/")}>Wróć do strony głównej</Button>
 
     <div className="stats-layout">
-      
-      {/* ✅ LEWA STRONA - 3 karty w jednym divie */}
+      {/* ✅ LEWA STRONA - karty */}
       <div className="stats-left">
         <div className="stat-card">
           <h3>Łącznie treningów</h3>
@@ -123,61 +125,92 @@ const Statistics = () => {
         </div>
       </div>
 
-      {/* ✅ PRAWA STRONA - wykresy koło siebie */}
+      {/* ✅ PRAWA STRONA - wykresy (1 na raz) */}
       <div className="stats-right">
-        <div className="charts-grid">
-          
-          <div className="chart-box">
-            <h2>Treningi w miesiącach</h2>
-            <div style={{ width: "100%", height: 300 }}>
-              <ResponsiveContainer>
-                <BarChart data={workoutsByMonth}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="label" />
-                  <YAxis allowDecimals={false} />
-                  <Tooltip />
-                  <Bar dataKey="count" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-
-          <div className="chart-box">
-            <h2>Treningi według dnia tygodnia</h2>
-            <div style={{ width: "100%", height: 300 }}>
-              <ResponsiveContainer>
-                <BarChart data={workoutsByWeekday}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="label" />
-                  <YAxis allowDecimals={false} />
-                  <Tooltip />
-                  <Bar dataKey="count" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-
-        </div>
-
-        {/* trzeci wykres pod spodem na całą szerokość */}
         <div className="chart-box">
-          <h2>Trend (treningi w czasie)</h2>
-          <div style={{ width: "100%", height: 280 }}>
-            <ResponsiveContainer>
-              <LineChart data={workoutsByDay}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis allowDecimals={false} />
-                <Tooltip />
-                <Line dataKey="count" />
-              </LineChart>
-            </ResponsiveContainer>
+          <div className="chart-header">
+            <h2 style={{ margin: 0 }}>
+              {activeChart === "month" && "Treningi w miesiącach"}
+              {activeChart === "weekday" && "Treningi według dnia tygodnia"}
+              {activeChart === "trend" && "Trend (treningi w czasie)"}
+            </h2>
+
+            <div className="chart-tabs">
+              <button
+                className={`tab-btn ${activeChart === "month" ? "active" : ""}`}
+                onClick={() => setActiveChart("month")}
+                type="button"
+              >
+                Miesiące
+              </button>
+
+              <button
+                className={`tab-btn ${activeChart === "weekday" ? "active" : ""}`}
+                onClick={() => setActiveChart("weekday")}
+                type="button"
+              >
+                Dni tyg.
+              </button>
+
+              <button
+                className={`tab-btn ${activeChart === "trend" ? "active" : ""}`}
+                onClick={() => setActiveChart("trend")}
+                type="button"
+              >
+                Trend
+              </button>
+            </div>
+          </div>
+
+          <div className="chart-body">
+            {activeChart === "month" && (
+              <div style={{ width: "100%", height: 320 }}>
+                <ResponsiveContainer>
+                  <BarChart data={workoutsByMonth}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="label" />
+                    <YAxis allowDecimals={false} />
+                    <Tooltip />
+                    <Bar dataKey="count"fill="#ff8c1a" radius={[8, 8, 0, 0]}  />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            )}
+
+            {activeChart === "weekday" && (
+              <div style={{ width: "100%", height: 320 }}>
+                <ResponsiveContainer>
+                  <BarChart data={workoutsByWeekday}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="label" />
+                    <YAxis allowDecimals={false} />
+                    <Tooltip />
+                    <Bar dataKey="count"fill="#ff8c1a" radius={[8, 8, 0, 0]}  />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            )}
+
+            {activeChart === "trend" && (
+              <div style={{ width: "100%", height: 320 }}>
+                <ResponsiveContainer>
+                  <LineChart data={workoutsByDay}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="date" />
+                    <YAxis allowDecimals={false} />
+                    <Tooltip />
+                    <Line dataKey="count" />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            )}
           </div>
         </div>
       </div>
     </div>
   </div>
 );
+
 
 };
 
