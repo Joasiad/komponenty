@@ -25,7 +25,7 @@ const AddExercise = ({ closeAddPopup }: AddExerciseProps) => {
   const [exerciseList, setExerciseList] = useState<Exercise[]>([]);
 
   const API_URL = "http://localhost:5000/api/exercises";
-
+//kiedy komponent sie uruchou funckja pobierze liste cwiczen z api i zapisze ja w ecercise list 
   useEffect(() => {
     const load = async () => {
       try {
@@ -39,12 +39,12 @@ const AddExercise = ({ closeAddPopup }: AddExerciseProps) => {
     };
 
     void load();
-  }, []);
+  }, []);//to robi ze uruchamia sie raz przy pierwzym renderze 
 
   const handleAddExercise = async () => {
     if (!exerciseName.trim()) return;//spacja
 
-
+//omit to typ w ts ktory mowi wez typ exercise i wywal z niego id zeby nie pokazywało sie na liscie we frontendzie
     const newExercise: Omit<Exercise, "_id"> = {
       name: exerciseName,
       bodyPart,
