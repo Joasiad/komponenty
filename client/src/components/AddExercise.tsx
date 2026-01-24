@@ -101,22 +101,28 @@ const AddExercise = ({ closeAddPopup }: AddExerciseProps) => {
         <input
           placeholder="Serie"
           type="number"
+          min={0}
           value={series}
-          onChange={(e) => setSeries(e.target.value)}
+          onChange={(e) => { if(Number(e.target.value)<0 )return;
+            setSeries(e.target.value);}}
         />
 
         <input
           placeholder="Powtórzenia"
           type="number"
+          min={0}
           value={reps}
-          onChange={(e) => setReps(e.target.value)}
+          onChange={(e) =>  { if(Number(e.target.value)<0 )return;
+            setReps(e.target.value);}}
         />
 
         <input
           placeholder="Kg"
           type="number"
+          min={0}
           value={kg}
-          onChange={(e) => setKg(e.target.value)}
+          onChange={(e) =>  { if(Number(e.target.value)<0 )return;
+            setKg(e.target.value);}}
         />
 
         <button onClick={handleAddExercise}>Dodaj ćwiczenie</button>

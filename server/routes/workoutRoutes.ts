@@ -8,7 +8,8 @@ router.post("/", async (req, res) => {
   try {
     const workout = new Workout(req.body);
     await workout.save();
-    res.json(workout);
+    const populated = await workout.populate("exercises");
+    res.json(populated);
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }

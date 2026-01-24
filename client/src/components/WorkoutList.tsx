@@ -13,7 +13,7 @@ export type Workout = {
   _id: string;
   date: string;          // ISO string
   time: string;
-  exercises: (string|Exercise)[];   // ID ćwiczeń
+  exercises: (string|Exercise)[];   
   notes?: string;
 };
 
@@ -65,9 +65,9 @@ const WorkoutList = ({
           {workout.notes && <div className="workout-text">{workout.notes}</div>}
 
            <ul className="exercise-list">
-            {workout.exercises.map((el) => (
-              <li key={typeof el === "string" ? el : el._id}>
-                {typeof el === "string" ? el : el.name}
+            {workout.exercises.map((ex) => (
+              <li key={typeof ex === "string" ? ex : ex._id}>
+                {typeof ex === "string" ? ex : ex.name}
               </li>
             ))}
           </ul>

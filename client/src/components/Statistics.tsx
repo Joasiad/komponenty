@@ -26,7 +26,7 @@ type Workout = {
 };
 
 
-// helper: YYYY-MM
+
 const monthKey = (d: Date) =>
   `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
 
@@ -42,14 +42,14 @@ const Statistics = () => {
 const [activeChart, setActiveChart] = useState<ChartView>("month");
   const [workouts, setWorkouts] = useState<Workout[]>([]);
 
-  // ✅ pobierz treningi z bazy
+  
   useEffect(() => {
     fetchWorkouts()
       .then(setWorkouts)
       .catch(console.error);
   }, []);
 
-  // ✅ 1) ile treningów w miesiącu
+
   const workoutsByMonth = useMemo(() => {
     const map = new Map<string, { key: string; label: string; count: number }>();
 
@@ -68,7 +68,7 @@ const [activeChart, setActiveChart] = useState<ChartView>("month");
     return Array.from(map.values()).sort((a, b) => a.key.localeCompare(b.key));
   }, [workouts]);
 
-  // ✅ 2) ile treningów w dni tygodnia
+ 
   const workoutsByWeekday = useMemo(() => {
     const labels = ["Nd", "Pn", "Wt", "Śr", "Czw", "Pt", "Sb"];
     const counts = Array(7).fill(0);
@@ -81,7 +81,7 @@ const [activeChart, setActiveChart] = useState<ChartView>("month");
     return labels.map((label, i) => ({ label, count: counts[i] }));
   }, [workouts]);
 
-  // ✅ 3) trend: treningi dziennie (linia)
+  
   const workoutsByDay = useMemo(() => {
     const map = new Map<string, number>(); // YYYY-MM-DD -> count
 
@@ -95,7 +95,7 @@ const [activeChart, setActiveChart] = useState<ChartView>("month");
       .sort((a, b) => a.date.localeCompare(b.date));
   }, [workouts]);
 
-  // ✅ mini statystyki liczbowo
+ 
   const totalWorkouts = workouts.length;
   const totalExercises = workouts.reduce((sum, w) => sum + (w.exercises?.length ?? 0), 0);
   const avgExercises = totalWorkouts > 0 ? (totalExercises / totalWorkouts).toFixed(1) : "0";
@@ -107,7 +107,7 @@ const [activeChart, setActiveChart] = useState<ChartView>("month");
     <Button className="back" onClick={() => navigate("/")}>Wróć do strony głównej</Button>
 
     <div className="stats-layout">
-      {/* ✅ LEWA STRONA - karty */}
+      
       <div className="stats-left">
         <div className="stat-card">
           <h3>Łącznie treningów</h3>
@@ -120,12 +120,12 @@ const [activeChart, setActiveChart] = useState<ChartView>("month");
         </div>
 
         <div className="stat-card">
-          <h3>Średnio ćwiczeń / trening</h3>
+          <h3>Średnia ćwiczeń na trening</h3>
           <div className="stat-value">{avgExercises}</div>
         </div>
       </div>
 
-      {/* ✅ PRAWA STRONA - wykresy (1 na raz) */}
+     
       <div className="stats-right">
         <div className="chart-box">
           <div className="chart-header">
